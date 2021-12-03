@@ -1,9 +1,10 @@
 import std/os
-import std/sugar
 import std/logging
 import std/sequtils
 import std/strutils
 import std/strformat
+
+from part2 import runPuzzle2
 # Prompt
 #[
 --- Day 1: Sonar Sweep ---
@@ -70,7 +71,7 @@ In this example, there are 7 measurements that are larger than the previous meas
 How many measurements are larger than the previous measurement?
 ]#
 
-proc runPuzzle1() =
+proc runPuzzle1(): seq[int] =
   let inputFilepath = currentSourcePath().parentDir() / "input.txt"
 
   debug(fmt"Reading from {inputFilepath}")
@@ -91,8 +92,10 @@ proc runPuzzle1() =
     prev = val
   
   echo fmt"Total increases: {totalIncreases}"
+  inputs
 
 proc day1*() =
   echo "Running puzzle 1"
-  runPuzzle1()
+  let measurements = runPuzzle1()
   echo "Running puzzle 2"
+  runPuzzle2(measurements)
