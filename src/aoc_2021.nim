@@ -4,6 +4,7 @@ import std/strutils
 import std/logging
 from std/os import commandLineParams
 import ./day1/runExercise
+import ./day2/part1
 
 proc displayHelp(code: int) =
   echo """
@@ -19,6 +20,7 @@ proc main() =
   var args = initOptParser(commandLineParams())
   let exercisesByDay = [
     day1,
+    day2,
   ]
 
   var dayIndex = -1

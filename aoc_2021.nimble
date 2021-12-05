@@ -11,3 +11,4 @@ bin           = @["aoc_2021"]
 # Dependencies
 
 requires "nim >= 1.6.0"
+requires "zero_functional >= 1.2.1"
