@@ -39,7 +39,12 @@ Using this new interpretation of the commands, calculate the horizontal position
 and depth you would have after following the planned course. What do you get if
 you multiply your final horizontal position by your final depth?
 ]#
-from part1 import Direction, parseLine, getInputFilepath
+import std/logging
+import std/strformat
+import std/strutils
+import zero_functional
+
+from part1 import Direction, getInputFilepath
 
 type ExpandedPosition = object
   horizontal: int
@@ -47,9 +52,53 @@ type ExpandedPosition = object
   aim: int
 
 
-proc runPart2() =
-  var startingPosition = ExpandedPosition(horizontal: 0, depth: 0, aim: 0)
-  discard
+proc processLine(line: string, result: var ExpandedPosition) =
+  ## Parses input line with revised input logic
+  let direction_and_quantity = line.strip().splitWhitespace(maxSplit = 2)
+  assert direction_and_quantity.len() == 2, (
+    fmt"Should have only position and quantity, got {direction_and_quantity}"
+  )
 
-when isMainModule:
-  echo getInputFilepath()
+  let (direction, quantity) = (direction_and_quantity[0].toLower(),
+      direction_and_quantity[1].parseInt())
+
+  let dirValue = case direction:
+  of "up":
+    Direction.Up
+  of "down":
+    Direction.Down
+  of "forward":
+    Direction.Forward
+  else:
+    var possibleDirections: seq[string] = @[]
+    for d in ord(low(Direction)) .. ord(high(Direction)):
+      possibleDirections.add($Direction(d))
+
+    let all_directions = possibleDirections.join(", ")
+
+    raise newException(ValueError, fmt"Expected one of {all_directions}, got {direction}")
+
+  case dirValue:
+  of Direction.Up:
+    result.aim -= quantity
+  of Direction.Down:
+    result.aim += quantity
+  of Direction.Forward:
+    result.horizontal += quantity
+    result.depth += quantity * result.aim
+
+
+proc runPart2*() =
+  var position = ExpandedPosition(horizontal: 0, depth: 0, aim: 0)
+  let inputFilepath = getInputFilepath()
+
+  debug fmt"Loading file from {inputFilepath}"
+
+  inputFilepath.lines() -->
+    foreach(processLine(it, position))
+  
+  echo fmt"Ending position is {position}"
+
+  let product = position.depth * position.horizontal
+  echo fmt"Product is {product}"
+

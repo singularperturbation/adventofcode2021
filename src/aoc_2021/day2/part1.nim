@@ -116,9 +116,12 @@ proc runPart1() =
   let product = totalPosition.horizontal * totalPosition.depth
   echo fmt"Final (horizontal, depth): {totalPosition}, product = {product}"
 
+from part2 import runPart2
+
 proc day2*() =
   ## Entry for the module to run all parts
   runPart1()
+  runPart2()
 
 
 when isMainModule:
