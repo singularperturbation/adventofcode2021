@@ -52,7 +52,7 @@ type PositionData = tuple[
   depth: int
 ]
 
-type Direction = enum
+type Direction* = enum
   Up, Down, Forward
 
 proc `+=`(a: var PositionData, b: PositionData) {.inline.} =
@@ -98,21 +98,27 @@ proc parseLine(inputLine: string): PositionData =
   of Direction.Forward:
     result.horizontal += quantity
 
-proc day2*() =
+proc getInputFilepath*(): string = currentSourcePath().parentDir() / "input.txt"
+
+proc runPart1() =
   var totalPosition: PositionData = (0, 0)
 
-  let inputFilepath = currentSourcePath().parentDir() / "input.txt"
+  let inputFilepath = getInputFilepath()
 
   debug fmt"Loading file from {inputFilepath}"
 
   # Functional with sequtils would load all in memory
-  let position = inputFilepath.lines() -->>
+  let position = inputFilepath.lines() -->
     map(parseLine).
     fold(totalPosition, a + it)
 
   echo fmt"Final fp result: {position}"
   let product = totalPosition.horizontal * totalPosition.depth
   echo fmt"Final (horizontal, depth): {totalPosition}, product = {product}"
+
+proc day2*() =
+  ## Entry for the module to run all parts
+  runPart1()
 
 
 when isMainModule:

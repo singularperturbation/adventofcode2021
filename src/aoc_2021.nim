@@ -3,8 +3,8 @@ import std/strformat
 import std/strutils
 import std/logging
 from std/os import commandLineParams
-import ./day1/runExercise
-import ./day2/part1
+import aoc_2021/day1/runExercise
+import aoc_2021/day2/part1
 
 proc displayHelp(code: int) =
   echo """
