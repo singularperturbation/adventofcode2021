@@ -5,6 +5,7 @@ import std/logging
 from std/os import commandLineParams
 import aoc_2021/day1/runExercise
 import aoc_2021/day2/part1
+import aoc_2021/day3/runDay3
 
 proc displayHelp(code: int) =
   echo """
@@ -21,6 +22,7 @@ proc main() =
   let exercisesByDay = [
     day1,
     day2,
+    runDay3,
   ]
 
   var dayIndex = -1
